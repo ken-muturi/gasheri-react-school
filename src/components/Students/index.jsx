@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-
+import Form from "./Form";
 const apiUrL = "http://localhost:3000/api";
 
 const Index = () => {
   const [students, setStudents] = useState([]);
+
+  const [currentStudent, setCurrentStudent] = useState(null);
+
+  const [success, showSuccess] = useState("");
+  const [error, showError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +18,37 @@ const Index = () => {
 
     fetchData();
   }, []);
+
+  const saveEdit = (id, data) => {
+    fetch(`${apiUrL}/students/${id}`, {
+      method: "PATCH",
+      contentType: "application/json",
+      data,
+    })
+      .then((res) => res.json())
+      .then((d) => {
+        setStudents(students.filter((d) => d.id !== id));
+        showSuccess("Success deleting student");
+      })
+      .catch((e) => {
+        showError("Error deleting student" + e);
+      });
+  };
+
+  const handleDelete = (id) => {
+    fetch(`${apiUrL}/students/${id}`, {
+      method: "DELETE",
+      contentType: "application/json",
+    })
+      .then((res) => res.json())
+      .then((d) => {
+        setStudents(students.filter((d) => d.id !== id));
+        showSuccess("Success deleting student");
+      })
+      .catch((e) => {
+        showError("Error deleting student" + e);
+      });
+  };
 
   return (
     <>
@@ -32,6 +68,36 @@ const Index = () => {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">Students</h5>
+            {success && (
+              <div
+                className="alert alert-success bg-success text-light border-0 alert-dismissible fade show"
+                role="alert"
+              >
+                Success saving students
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            )}
+
+            {error && (
+              <div
+                className="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show"
+                role="alert"
+              >
+                Error saving student
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            )}
+
             <table className="table table-hover  table-striped table-bordered">
               <thead>
                 <tr>
@@ -46,18 +112,45 @@ const Index = () => {
               <tbody>
                 {students.map((student, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <th scope="row">{++index}</th>
                       <td>{student.name}</td>
                       <td>{student.entrynumber}</td>
                       <td>{student.email}</td>
                       <td>{student.contactnumber}</td>
                       <td>{student.homecity}</td>
+                      <td>
+                        <span
+                          className="pointer"
+                          onClick={() => {
+                            setCurrentStudent(student);
+                          }}
+                          data-bs-toggle="modal"
+                          data-bs-target="#largeModal"
+                        >
+                          <i className="bi bi-pencil-square"></i>
+                        </span>
+                        |
+                        <span
+                          className="pointer"
+                          onClick={() => {
+                            handleDelete(student.id);
+                          }}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </span>
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
+            {currentStudent && (
+              <Form
+                setCurrentStudent={setCurrentStudent}
+                student={currentStudent}
+              />
+            )}
           </div>
         </div>
       </section>

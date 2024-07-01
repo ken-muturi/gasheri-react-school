@@ -10,7 +10,7 @@ const App = () => {
       <Header />
       <Sidebar />
 
-      <main id="main" class="main">
+      <main id="main" className="main">
         <Students />
       </main>
 
