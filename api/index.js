@@ -26,13 +26,18 @@ app.get("/api/students/:id", function (req, res) {
 })
 
 app.post("/api/students", function (req, res) {
-    const body = req.params.body
-    const values = `('${body.name}', '${body.email}','${body.contactnumber}','${body.emahomecityil}')`;
-    db.query('INSERT INTO students (name, entrynumber, email, contactnumber, homecity ) VALUES ' + values, function (err, results) {
+    const body = req.body
+    const values = `('${body.name}', '${body.entrynumber}', '${body.email}','${body.contactnumber}','${body.homecity}')`;
+    db.query('INSERT INTO students (name, entrynumber, email, contactnumber, homecity ) VALUES ' + values, function (err) {
         if (err) {
             return res.status(400).json({ error: err });
         }
-        return res.status(200).json(results)
+        db.query("SELECT * FROM students WHERE id = LAST_INSERT_ID();", (e, result) => {
+            if (e) {
+                return res.status(400).json({ error: e });
+            }
+            return res.status(200).json(result[0])
+        })
     })
 })
 

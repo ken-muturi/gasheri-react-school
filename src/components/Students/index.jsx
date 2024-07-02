@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Form from "./Form";
+import AddStudent from "./AddStudent";
+import EditStudent from "./EditStudent";
 const apiUrL = "http://localhost:3000/api";
 
 const Index = () => {
   const [students, setStudents] = useState([]);
 
   const [currentStudent, setCurrentStudent] = useState(null);
+  const [showAddStudentForm, setShowAddStudentForm] = useState(false);
 
   const [success, showSuccess] = useState("");
   const [error, showError] = useState("");
@@ -130,8 +132,28 @@ const Index = () => {
                 })}
               </tbody>
             </table>
+            <p>
+              <a
+                href="#"
+                className="btn btn-sm btn-primary"
+                onClick={() => {
+                  setShowAddStudentForm(true);
+                }}
+              >
+                Add Student
+              </a>
+            </p>
+            {showAddStudentForm && (
+              <AddStudent
+                setStudents={setStudents}
+                setShowError={showError}
+                setShowSuccess={showSuccess}
+                setShowAddStudentForm={setShowAddStudentForm}
+              />
+            )}
+
             {currentStudent && (
-              <Form
+              <EditStudent
                 setStudents={setStudents}
                 setShowError={showError}
                 setShowSuccess={showSuccess}
