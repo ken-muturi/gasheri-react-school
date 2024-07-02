@@ -37,8 +37,7 @@ app.post("/api/students", function (req, res) {
 })
 
 app.patch("/api/students/:id", function (req, res) {
-    const body = req.params.body
-    Object
+    const body = req.body
     const updateColumns = Object.entries(body).map(b => {
         const [column, value] = b;
         return `${column} = '${value}'`
@@ -53,7 +52,7 @@ app.patch("/api/students/:id", function (req, res) {
 })
 
 app.delete("/api/students/:id", function (req, res) {
-    db.query('DELETE * FROM students WHERE id=' + req.params.id, function (err, results) {
+    db.query('DELETE FROM students WHERE id=' + req.params.id, function (err, results) {
         if (err) {
             return res.status(400).json({ error: err });
         }

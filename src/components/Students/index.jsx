@@ -19,26 +19,13 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const saveEdit = (id, data) => {
-    fetch(`${apiUrL}/students/${id}`, {
-      method: "PATCH",
-      contentType: "application/json",
-      data,
-    })
-      .then((res) => res.json())
-      .then((d) => {
-        setStudents(students.filter((d) => d.id !== id));
-        showSuccess("Success deleting student");
-      })
-      .catch((e) => {
-        showError("Error deleting student" + e);
-      });
-  };
-
   const handleDelete = (id) => {
     fetch(`${apiUrL}/students/${id}`, {
       method: "DELETE",
-      contentType: "application/json",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then((res) => res.json())
       .then((d) => {
@@ -125,8 +112,6 @@ const Index = () => {
                           onClick={() => {
                             setCurrentStudent(student);
                           }}
-                          data-bs-toggle="modal"
-                          data-bs-target="#largeModal"
                         >
                           <i className="bi bi-pencil-square"></i>
                         </span>
@@ -147,6 +132,9 @@ const Index = () => {
             </table>
             {currentStudent && (
               <Form
+                setStudents={setStudents}
+                setShowError={showError}
+                setShowSuccess={showSuccess}
                 setCurrentStudent={setCurrentStudent}
                 student={currentStudent}
               />
