@@ -32,6 +32,7 @@ app.post("/api/students", function (req, res) {
         if (err) {
             return res.status(400).json({ error: err });
         }
+        // db.query("SELECT * FROM students LIMIT 1 ORDER BY id desc;", (e, result) => {
         db.query("SELECT * FROM students WHERE id = LAST_INSERT_ID();", (e, result) => {
             if (e) {
                 return res.status(400).json({ error: e });
