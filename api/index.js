@@ -1,70 +1,34 @@
 const express = require("express");
 const cors = require("cors");
-const db = require('./db/db');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const path = require('path');
+
+const studentsRoutes = require('./routes/students')
+const teachersRoutes = require('./routes/teachers');
 
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json());
 
-app.get("/api/students", function(req, res) {
-    db.query('SELECT * FROM students', function (err, results) {
-        if(err) {
-            return res.status(400).json({error: err});
-        }
-        return res.status(200).json(results)
-    })
-})
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
-app.get("/api/students/:id", function (req, res) {
-    db.query('SELECT * FROM students WHERE id=' + req.params.id, function (err, results) {
-        if (err) {
-            return res.status(400).json({ error: err });
-        }
-        return res.status(200).json(results)
-    })
-})
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(compression());
 
-app.post("/api/students", function (req, res) {
-    const body = req.body
-    const values = `('${body.name}', '${body.entrynumber}', '${body.email}','${body.contactnumber}','${body.homecity}')`;
-    db.query('INSERT INTO students (name, entrynumber, email, contactnumber, homecity ) VALUES ' + values, function (err) {
-        if (err) {
-            return res.status(400).json({ error: err });
-        }
-        // db.query("SELECT * FROM students LIMIT 1 ORDER BY id desc;", (e, result) => {
-        db.query("SELECT * FROM students WHERE id = LAST_INSERT_ID();", (e, result) => {
-            if (e) {
-                return res.status(400).json({ error: e });
-            }
-            return res.status(200).json(result[0])
-        })
-    })
-})
+// app.use('/', express.static(path.join(__dirname, 'build')));
+// app.use('/public', express.static(path.join(__dirname, 'build')));
+// app.use('/school', express.static(path.join(__dirname, 'build')));
 
-app.patch("/api/students/:id", function (req, res) {
-    const body = req.body
-    const updateColumns = Object.entries(body).map(b => {
-        const [column, value] = b;
-        return `${column} = '${value}'`
-    });
+app.use('/api', studentsRoutes);
+app.use('/api', teachersRoutes);
 
-    db.query('UPDATE students SET ' + updateColumns.join(", ") + 'WHERE id=' + req.params.id, function (err, results) {
-        if (err) {
-            return res.status(400).json({ error: err });
-        }
-        return res.status(200).json(results)
-    })
-})
-
-app.delete("/api/students/:id", function (req, res) {
-    db.query('DELETE FROM students WHERE id=' + req.params.id, function (err, results) {
-        if (err) {
-            return res.status(400).json({ error: err });
-        }
-        return res.status(200).json(results)
-    })
-})
+app.get('/', (req, res) => res.json({ welcome: Date.now() }));
 
 const port = 3000;
 app.listen(port, (req, res) => console.log(`Listening at port ${port}`));

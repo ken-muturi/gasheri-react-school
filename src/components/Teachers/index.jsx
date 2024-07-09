@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
-import AddStudent from "./AddStudent";
-import EditStudent from "./EditStudent";
-import Student from "./Student";
+import AddTeacher from "./AddTeacher";
+import EditTeacher from "./EditTeacher";
+import Teacher from "./Teacher";
 import App from "../../App";
 const apiUrL = "http://localhost:3000/api";
 
 const Index = () => {
-  const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
-  const [currentStudent, setCurrentStudent] = useState(null);
-  const [showAddStudentForm, setShowAddStudentForm] = useState(false);
+  const [currentTeacher, setCurrentTeacher] = useState(null);
+  const [showAddTeacherForm, setShowAddTeacherForm] = useState(false);
 
   const [success, showSuccess] = useState("");
   const [error, showError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`${apiUrL}/students`).then((res) => res.json());
-      setStudents(data);
+      const data = await fetch(`${apiUrL}/teachers`).then((res) => res.json());
+      setTeachers(data);
     };
 
     fetchData();
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`${apiUrL}/students/${id}`, {
+    fetch(`${apiUrL}/teachers/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -33,11 +33,11 @@ const Index = () => {
     })
       .then((res) => res.json())
       .then((d) => {
-        setStudents(students.filter((d) => d.id !== id));
-        showSuccess("Success deleting student");
+        setTeachers(teachers.filter((d) => d.id !== id));
+        showSuccess("Success deleting Teacher");
       })
       .catch((e) => {
-        showError("Error deleting student" + e);
+        showError("Error deleting Teacher" + e);
       });
   };
 
@@ -58,13 +58,13 @@ const Index = () => {
       <section className="section">
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">Students</h5>
+            <h5 className="card-title">Teachers</h5>
             {success && (
               <div
                 className="alert alert-success bg-success text-light border-0 alert-dismissible fade show"
                 role="alert"
               >
-                Success saving students
+                Success saving Teachers
                 <button
                   type="button"
                   className="btn-close btn-close-white"
@@ -79,7 +79,7 @@ const Index = () => {
                 className="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show"
                 role="alert"
               >
-                Error saving student
+                Error saving Teacher
                 <button
                   type="button"
                   className="btn-close btn-close-white"
@@ -101,13 +101,13 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {students.map((student, index) => {
+                {teachers.map((teacher, index) => {
                   return (
-                    <Student
+                    <Teacher
                       key={index}
                       id={++index}
-                      student={student}
-                      setCurrentStudent={setCurrentStudent}
+                      teacher={teacher}
+                      setCurrentTeacher={setCurrentTeacher}
                       handleDelete={handleDelete}
                     />
                   );
@@ -119,28 +119,28 @@ const Index = () => {
                 href="#"
                 className="btn btn-sm btn-primary"
                 onClick={() => {
-                  setShowAddStudentForm(true);
+                  setShowAddTeacherForm(true);
                 }}
               >
-                Add Student
+                Add Teacher
               </a>
             </p>
-            {showAddStudentForm && (
-              <AddStudent
-                setStudents={setStudents}
+            {showAddTeacherForm && (
+              <AddTeacher
+                setTeachers={setTeachers}
                 setShowError={showError}
                 setShowSuccess={showSuccess}
-                setShowAddStudentForm={setShowAddStudentForm}
+                setShowAddTeacherForm={setShowAddTeacherForm}
               />
             )}
 
-            {currentStudent && (
-              <EditStudent
-                setStudents={setStudents}
+            {currentTeacher && (
+              <EditTeacher
+                setTeachers={setTeachers}
                 setShowError={showError}
                 setShowSuccess={showSuccess}
-                setCurrentStudent={setCurrentStudent}
-                student={currentStudent}
+                setCurrentTeacher={setCurrentTeacher}
+                teacher={currentTeacher}
               />
             )}
           </div>

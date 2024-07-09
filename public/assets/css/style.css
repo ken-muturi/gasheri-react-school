@@ -17,7 +17,7 @@
   cursor: pointer;
 }
 
-.edit-student {
+.school-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -29,7 +29,7 @@
   /* Ensures it stays on top of other elements */
 }
 
-#edit-student-form {
+#school-modal-form {
   margin: 100px auto;
   width: 50%;
   height: 630px;

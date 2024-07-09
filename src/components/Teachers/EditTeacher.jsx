@@ -3,72 +3,72 @@ const apiUrL = "http://localhost:3000/api";
 
 const Form = (props) => {
   const {
-    student,
-    setCurrentStudent,
+    teacher,
+    setCurrentTeacher,
     setShowError,
     setShowSuccess,
-    setStudents,
+    setTeachers,
   } = props;
 
-  const [studentDetails, setStudentDetails] = useState(student);
-  console.log({ studentDetails });
+  const [teacherDetails, setTeacherDetails] = useState(teacher);
+  console.log({ teacherDetails });
 
   const handleFormElement = (input, value) => {
-    setStudentDetails({
-      ...studentDetails,
+    setTeacherDetails({
+      ...teacherDetails,
       [input]: value,
     });
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    fetch(`${apiUrL}/students/${studentDetails.id}`, {
+    fetch(`${apiUrL}/teachers/${teacherDetails.id}`, {
       method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(studentDetails),
+      body: JSON.stringify(teacherDetails),
     })
       .then((res) => res.json())
       .then((d) => {
-        setShowSuccess("Success deleting student");
-        setStudents((prevStudents) => {
-          return prevStudents.map((s) => {
-            // if(s.id === studentDetails.id) {
-            //   return studentDetails;
+        setShowSuccess("Success deleting teacher");
+        setTeachers((prevTeachers) => {
+          return prevTeachers.map((s) => {
+            // if(s.id === teacherDetails.id) {
+            //   return teacherDetails;
             // }
             // return s;
-            return s.id === studentDetails.id ? studentDetails : s;
+            return s.id === teacherDetails.id ? teacherDetails : s;
           });
         });
-        setCurrentStudent(null);
+        setCurrentTeacher(null);
       })
       .catch((e) => {
-        setShowError("Error deleting student" + e);
+        setShowError("Error deleting teacher" + e);
       });
   };
 
   return (
-    <div className="school-modal" id="edit-student">
-      <div id="school-modal-form" className="mb-3">
-        <h2>Student Information Form</h2>
+    <div className="school-modal" id="edit-teacher">
+      <div id="school-modal-form " className="mb-3">
+        <h2>Teacher Information Form</h2>
         <form>
           <div className="mb-3">
-            <label htmlFor="studentName" className="form-label">
-              Student Name
+            <label htmlFor="teacherName" className="form-label">
+              Teacher Name
             </label>
             <input
               type="text"
               className="form-control"
-              id="studentName"
-              name="studentName"
-              defaultValue={studentDetails.name}
+              id="teacherName"
+              name="teacherName"
+              defaultValue={teacherDetails.name}
               required
               onChange={(e) => {
                 // console.log({ event: e.target.value });
-                setStudentDetails({
-                  ...studentDetails,
+                setTeacherDetails({
+                  ...teacherDetails,
                   name: e.target.value,
                 });
               }}
@@ -82,7 +82,7 @@ const Form = (props) => {
               type="text"
               className="form-control"
               id="entryNumber"
-              defaultValue={studentDetails.entrynumber}
+              defaultValue={teacherDetails.entrynumber}
               name="entryNumber"
               required
               onChange={(e) => {
@@ -96,7 +96,7 @@ const Form = (props) => {
             </label>
             <input
               type="email"
-              defaultValue={studentDetails.email}
+              defaultValue={teacherDetails.email}
               className="form-control"
               id="email"
               name="email"
@@ -114,7 +114,7 @@ const Form = (props) => {
               type="text"
               className="form-control"
               id="contactNumber"
-              defaultValue={studentDetails.contactnumber}
+              defaultValue={teacherDetails.contactnumber}
               name="contactNumber"
               required
               onChange={(e) => {
@@ -127,15 +127,15 @@ const Form = (props) => {
               Home City
             </label>
             <input
-              defaultValue={studentDetails.homecity}
+              defaultValue={teacherDetails.homecity}
               type="text"
               className="form-control"
               id="homeCity"
               name="homeCity"
               required
               onChange={(e) => {
-                setStudentDetails({
-                  ...studentDetails,
+                setTeacherDetails({
+                  ...teacherDetails,
                   homecity: e.target.value,
                 });
               }}
@@ -155,7 +155,7 @@ const Form = (props) => {
               <input
                 type="submit"
                 onClick={() => {
-                  setCurrentStudent(null);
+                  setCurrentTeacher(null);
                 }}
                 value="Cancel"
                 className="btn btn-danger"

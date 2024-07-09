@@ -45,8 +45,8 @@ const Form = (props) => {
   };
 
   return (
-    <div className="edit-student" id="edit-student">
-      <div id="edit-student-form" className="mb-3">
+    <div className="school-modal" id="edit-student">
+      <div id="school-modal-form" className="mb-3">
         <h2>Student Information Form</h2>
         <form>
           <div className="mb-3">
