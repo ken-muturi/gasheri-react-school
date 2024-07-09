@@ -17,8 +17,12 @@ const Student = (props) => {
             setCurrentStudent(student);
           }}
         >
-          <i className="bi bi-pencil-square"></i>
+          <i className="bi bi-pencil-square"></i> Edit
         </span>
+        |
+        <a href="#" className="pointer">
+          <i className="bi bi-trash-fill"></i> Profile
+        </a>
         |
         <span
           className="pointer"
@@ -26,7 +30,7 @@ const Student = (props) => {
             handleDelete(student.id);
           }}
         >
-          <i className="bi bi-trash-fill"></i>
+          <i className="bi bi-trash-fill"></i> Delete
         </span>
       </td>
     </tr>
