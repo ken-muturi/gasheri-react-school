@@ -1,7 +1,9 @@
 import React from "react";
+import { decrypt } from "../../utils/util";
 
 const Index = () => {
-  const auth = JSON.parse(sessionStorage.getItem("auth") || "{}");
+  const session = decrypt(sessionStorage.getItem("auth"));
+  const auth = JSON.parse(session || "{}");
 
   const handleLogout = (event) => {
     sessionStorage.removeItem("loggedIn");

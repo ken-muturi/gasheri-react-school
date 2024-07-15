@@ -8,6 +8,7 @@ const studentsRoutes = require('./routes/students')
 const teachersRoutes = require('./routes/teachers');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
+const { hashPassword } = require("./utils/util");
 
 const app = express();
 app.use(cors());
@@ -32,7 +33,11 @@ app.use('/api', teachersRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
-app.get('/', (req, res) => res.json({ welcome: Date.now() }));
+const hash = hashPassword(Date.now().toString())
+console.log({ hash })
+app.get('/', (req, res) => res.json({
+    welcome: Date.now()
+}));
 
 
 const port = 3000;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { encrypt } from "../../utils/util";
 const apiUrl = "http://localhost:3000/api";
 const Login = () => {
   // get the email and password
@@ -50,7 +50,7 @@ const Login = () => {
       })
       .then((data) => {
         sessionStorage.setItem("loggedIn", true);
-        sessionStorage.setItem("auth", JSON.stringify(data));
+        sessionStorage.setItem("auth", encrypt(JSON.stringify(data)));
         window.location.href = "/students";
       })
       .catch((e) => {
