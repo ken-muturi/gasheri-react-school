@@ -5,16 +5,21 @@ import Sidebar from "./components/Sidebar";
 
 const App = (props) => {
   const { children } = props;
-  return (
-    <>
-      <Header />
-      <Sidebar />
-      <main id="main" className="main">
-        {children}
-      </main>
-      <Footer />
-    </>
-  );
+  const session = sessionStorage.getItem("loggedIn");
+  if (!session || session !== "true") {
+    window.location.href = "/";
+  } else {
+    return (
+      <>
+        <Header />
+        <Sidebar />
+        <main id="main" className="main">
+          {children}
+        </main>
+        <Footer />
+      </>
+    );
+  }
 };
 
 export default App;

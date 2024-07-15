@@ -2,10 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const path = require('path');
+// const path = require('path');
 
 const studentsRoutes = require('./routes/students')
 const teachersRoutes = require('./routes/teachers');
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(cors());
@@ -27,8 +29,11 @@ app.use(compression());
 
 app.use('/api', studentsRoutes);
 app.use('/api', teachersRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => res.json({ welcome: Date.now() }));
+
 
 const port = 3000;
 app.listen(port, (req, res) => console.log(`Listening at port ${port}`));
