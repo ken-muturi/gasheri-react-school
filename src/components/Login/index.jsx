@@ -103,7 +103,7 @@ const Login = () => {
             )}
             <form className="row g-3 needs-validation">
               <div className="col-12">
-                <label for="email" className="form-label">
+                <label htmlFor="email" className="form-label">
                   Email
                 </label>
                 <div className="input-group has-validation">
@@ -125,7 +125,7 @@ const Login = () => {
               </div>
 
               <div className="col-12">
-                <label for="password" className="form-label">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
                 <input
@@ -153,7 +153,7 @@ const Login = () => {
               </div>
               <div className="col-12">
                 <p className="small mb-0">
-                  Don't have account? <a href="#">Create an account</a>
+                  Don't have account? <a href="/signup">Create an account</a>
                 </p>
               </div>
             </form>

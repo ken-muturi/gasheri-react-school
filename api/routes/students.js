@@ -6,7 +6,7 @@ const db = require('../utils/db');
 route.get("/students", function (req, res) {
     db.query('SELECT * FROM students', function (err, results) {
         if (err) {
-            return res.status(400).json({ error: err });
+            return res.status(400).json({ error: err.sqlMessage });
         }
         return res.status(200).json(results)
     })
@@ -15,7 +15,7 @@ route.get("/students", function (req, res) {
 route.get("/students/:id", function (req, res) {
     db.query('SELECT * FROM students WHERE id=' + req.params.id, function (err, results) {
         if (err) {
-            return res.status(400).json({ error: err });
+            return res.status(400).json({ error: err.sqlMessage });
         }
         return res.status(200).json(results)
     })
@@ -26,12 +26,12 @@ route.post("/students", function (req, res) {
     const values = `('${body.name}', '${body.entrynumber}', '${body.email}','${body.contactnumber}','${body.homecity}')`;
     db.query('INSERT INTO students (name, entrynumber, email, contactnumber, homecity ) VALUES ' + values, function (err) {
         if (err) {
-            return res.status(400).json({ error: err });
+            return res.status(400).json({ error: err.sqlMessage });
         }
         // db.query("SELECT * FROM students LIMIT 1 ORDER BY id desc;", (e, result) => {
         db.query("SELECT * FROM students WHERE id = LAST_INSERT_ID();", (e, result) => {
             if (e) {
-                return res.status(400).json({ error: e });
+                return res.status(400).json({ error: e.sqlMessage });
             }
             return res.status(200).json(result[0])
         })

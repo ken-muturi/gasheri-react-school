@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Students from "./components/Students";
 import Teachers from "./components/Teachers";
+import Signup from "./components/Signup";
+import Users from "./components/Users";
 
 import {
   createBrowserRouter,
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/users",
+    element: <Users />,
   },
   {
     path: "/students",

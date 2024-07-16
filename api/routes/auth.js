@@ -8,7 +8,7 @@ route.post('/login', (req, res) => {
     const pass = hashPassword(password);
     db.query(`SELECT firstname, password, othernames, active FROM users WHERE email='${email}'`, function (err, results) {
         if (err) {
-            return res.status(400).json({ error: err });
+            return res.status(400).json({ error: err.sqlMessage });
         }
 
         if (results.length) {
@@ -23,16 +23,17 @@ route.post('/login', (req, res) => {
 });
 
 route.post("/signup", function (req, res) {
-    const body = req.body
-    const password = hashPassword(body.password)
-    const values = `('${body.firstname}', '${body.othernames}', '${body.email}','${password}')`;
+    const { password, firstname, othernames, email } = req.body
+    console.log({ body: req.body })
+    const pass = hashPassword(password)
+    const values = `('${firstname}', '${othernames}', '${email}','${pass}')`;
     db.query('INSERT INTO users (firstname, othernames, email, password ) VALUES ' + values, function (err) {
         if (err) {
-            return res.status(400).json({ error: err });
+            return res.status(400).json({ error: err.sqlMessage });
         }
-        db.query("SELECT firstname, othernames, active FROM users WHERE id = LAST_INSERT_ID();", (e, result) => {
+        db.query("SELECT firstname, othernames, email, active FROM users WHERE id = LAST_INSERT_ID();", (e, result) => {
             if (e) {
-                return res.status(400).json({ error: e });
+                return res.status(400).json({ error: e.sqlMessage });
             }
             return res.status(200).json(result[0])
         })
