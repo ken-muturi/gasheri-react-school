@@ -12,6 +12,23 @@ route.get("/students", function (req, res) {
     })
 })
 
+route.get("/students/search", function (req, res) {
+    const search = req.query.q;
+    let where = '';
+    if (search) {
+        where = `WHERE name LIKE '%${search}%' OR entrynumber LIKE '%${search}%' OR email LIKE '%${search}%' OR contactnumber LIKE '%${search}%' OR homecity LIKE '%${search}%'`
+    }
+    db.query(`SELECT * FROM students ${where}`, (err, results) => {
+        if (err) {
+            return res.status(400).json({ error: err.sqlMessage });
+        }
+        else if (results.length) {
+            return res.status(200).json(results)
+        }
+        return res.status(400).json({ error: "no records found" });
+    })
+})
+
 route.get("/students/:id", function (req, res) {
     db.query('SELECT * FROM students WHERE id=' + req.params.id, function (err, results) {
         if (err) {

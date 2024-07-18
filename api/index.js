@@ -11,8 +11,8 @@ const authRoutes = require('./routes/auth');
 const { hashPassword } = require("./utils/util");
 
 const app = express();
-app.use(cors());
-app.use(express.urlencoded({ extended: true}))
+app.use(cors()); // this is allow request from different post (3001 => 3000)
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
 app.use((req, res, next) => {

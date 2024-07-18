@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import AddStudent from "./AddStudent";
 import EditStudent from "./EditStudent";
 import Student from "./Student";
+import Search from "./Search";
+import Search1 from "./Search-1";
+import Search2 from "./Search-2";
 import App from "../../App";
 const apiUrL = "http://localhost:3000/api";
 
 const Index = () => {
-  const [students, setStudents] = useState([]);
+  const [defaultStudents, setDefaultStudents] = useState([]);
+
+  const [students, setStudents] = useState(defaultStudents);
 
   const [currentStudent, setCurrentStudent] = useState(null);
   const [showAddStudentForm, setShowAddStudentForm] = useState(false);
@@ -14,14 +19,36 @@ const Index = () => {
   const [success, showSuccess] = useState("");
   const [error, showError] = useState("");
 
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`${apiUrL}/students`).then((res) => res.json());
+      setDefaultStudents(data);
       setStudents(data);
     };
 
     fetchData();
   }, []);
+
+  console.log({ defaultStudents });
+
+  useEffect(() => {
+    let studentList = defaultStudents;
+    if (search) {
+      studentList = studentList.filter((s) => {
+        const str = search.toLowerCase();
+        return (
+          s.name.toLowerCase().includes(str) ||
+          s.entrynumber.toLowerCase().includes(str) ||
+          s.email.toLowerCase().includes(str) ||
+          s.contactnumber.toLowerCase().includes(str) ||
+          s.homecity.toLowerCase().includes(str)
+        );
+      });
+    }
+    setStudents(studentList);
+  }, [search, defaultStudents]);
 
   const handleDelete = (id) => {
     fetch(`${apiUrL}/students/${id}`, {
@@ -79,7 +106,7 @@ const Index = () => {
                 className="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show"
                 role="alert"
               >
-                Error saving student
+                {error}
                 <button
                   type="button"
                   className="btn-close btn-close-white"
@@ -88,6 +115,11 @@ const Index = () => {
                 ></button>
               </div>
             )}
+
+            <Search2 setSearch={setSearch} />
+
+            <Search1 setStudents={setStudents} showError={showError} />
+            <Search setStudents={setStudents} showError={showError} />
 
             <table className="table table-hover  table-striped table-bordered">
               <thead>

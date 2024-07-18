@@ -7,6 +7,7 @@ import Students from "./components/Students";
 import Teachers from "./components/Teachers";
 import Signup from "./components/Signup";
 import Users from "./components/Users";
+import Login from './components/Login';
 
 import {
   createBrowserRouter,
@@ -14,12 +15,11 @@ import {
   // Route,
   // Link,
 } from "react-router-dom";
-import Login from './components/Login';
 
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/", // page/component/resource
     element: <Login />,
   },
   {
